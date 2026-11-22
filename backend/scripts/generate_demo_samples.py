@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import io
 import json
+import os
 from pathlib import Path
 
 import cv2
@@ -21,7 +22,7 @@ import piexif
 from PIL import Image, ImageDraw, PngImagePlugin
 
 ROOT = Path(__file__).resolve().parent.parent.parent
-OUT_DIR = ROOT / "demo_samples"
+OUT_DIR = Path(os.environ.get("FORENSICS_DEMO_SAMPLES_DIR", str(ROOT / "demo_samples")))
 
 
 def _make_natural_scene(width: int = 768, height: int = 512, seed: int = 42) -> np.ndarray:

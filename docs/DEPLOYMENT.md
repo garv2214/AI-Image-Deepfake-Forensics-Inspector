@@ -25,18 +25,19 @@ This guide deploys the **PyTorch + FastAPI forensic backend** on **Hugging Face 
    ---
    title: AI-Image & Deepfake Forensics API
    emoji: 🔍
-   colorFrom: cyan
-   colorTo: blue
+   colorFrom: blue
+   colorTo: indigo
    sdk: docker
    app_port: 7860
+   pinned: false
+   license: mit
    ---
    ```
 
-   Then push your code (or upload `Dockerfile`, `.dockerignore`, `backend/`, and `demo_samples/`):
+   Then push the pre-configured `hf-space` branch to Hugging Face:
    ```bash
-   git push hf main --force
+   git push hf hf-space:main
    ```
-   *(If pushing from Git, you can temporarily keep the 8-line YAML frontmatter at the top of `README.md` on a `hf-deploy` branch so your GitHub README stays clean.)*
 
 3. Wait ~3–5 minutes for Hugging Face to build the Docker image (it pre-caches `Organika/sdxl-detector` during build!).
 4. Verify your live backend URL:

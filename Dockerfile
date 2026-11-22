@@ -29,13 +29,13 @@ RUN pip install --upgrade pip && \
     pip install --index-url https://download.pytorch.org/whl/cpu torch torchvision && \
     pip install -r /app/requirements.txt
 
-# Copy backend code and curated live-demo samples
+# Copy backend code
 COPY backend/app /app/app
 COPY backend/scripts /app/scripts
-COPY demo_samples /app/demo_samples
 
-# Pre-download & cache Organika/sdxl-detector during image build for instant cold starts & offline reliability
-RUN mkdir -p /app/model_cache && \
+# Generate curated demo_samples/ and pre-cache Organika/sdxl-detector during image build
+RUN mkdir -p /app/model_cache /app/demo_samples && \
+    python /app/scripts/generate_demo_samples.py && \
     FORENSICS_LOCAL_FILES_ONLY=false python /app/scripts/download_model.py && \
     chown -R user:user /app
 

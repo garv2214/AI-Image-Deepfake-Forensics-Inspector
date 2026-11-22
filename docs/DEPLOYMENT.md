@@ -4,6 +4,29 @@ This guide deploys the **PyTorch + FastAPI forensic backend** on **Hugging Face 
 
 ---
 
+## Railway (Backend) + Vercel (Frontend) — Fastest 24/7 Cloud Setup
+
+The repository includes [railway.json](../railway.json) and a root [Dockerfile](../Dockerfile) pre-configured with `/api/health` checks, CPU PyTorch wheels, bundled demo sample generation, and build-time caching of `Organika/sdxl-detector`.
+
+### 1. Deploy Backend on Railway
+1. Open https://railway.app/new and sign in with GitHub.
+2. Click **Deploy from GitHub Repo** → select `garv2214/AI-Image-Deepfake-Forensics-Inspector`.
+3. Click **Deploy Now** (Railway auto-reads `railway.json` and builds `Dockerfile` in ~4–5 minutes).
+4. Once status turns **Active / Online**, open the service → **Settings → Networking → Public Networking → Generate Domain**.
+5. Verify your live backend URL:
+   - `https://<your-railway-domain>.up.railway.app/api/health`
+   - `https://<your-railway-domain>.up.railway.app/docs`
+
+### 2. Deploy Frontend on Vercel
+1. Open https://vercel.com/new and import `garv2214/AI-Image-Deepfake-Forensics-Inspector`.
+2. Set **Root Directory** → `frontend`.
+3. Under **Environment Variables**, add:
+   - **Key:** `NEXT_PUBLIC_API_URL`
+   - **Value:** `https://<your-railway-domain>.up.railway.app` *(no trailing slash)*
+4. Click **Deploy**.
+
+---
+
 ## Step 1: Deploy Backend API to Hugging Face Spaces (Free 16 GB RAM)
 
 1. Sign in at https://huggingface.co/new-space and create a new Space:
@@ -67,8 +90,8 @@ Within ~60 seconds, Vercel will give you a live HTTPS URL (e.g., `https://ai-ima
 Google Cloud Run runs the exact same root [Dockerfile](../Dockerfile) (automatically binding to Cloud Run's `$PORT=8080`), scales to zero when idle, and includes a generous monthly free tier (2M requests, 360,000 GiB-seconds).
 
 ### Option A: Zero-CLI Deploy via Google Cloud Console (Fastest)
-
-1. Open https://console.cloud.google.com/run and select/create a project (enable billing for the free tier).
+ 
+1. Open https://console.cloud.google.com/runand select/create a project (enable billing for the free tier).
 2. Click **Deploy container** → **Service** → choose **Continuously deploy from a repository (source or function)** → click **Set up with Cloud Build**.
 3. Connect GitHub and select:
    - **Repository:** `garv2214/AI-Image-Deepfake-Forensics-Inspector`

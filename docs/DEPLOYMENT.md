@@ -62,6 +62,55 @@ Within ~60 seconds, Vercel will give you a live HTTPS URL (e.g., `https://ai-ima
 
 ---
 
+## Alternative: Deploy Backend to Google Cloud Run (Recommended — 4 GiB RAM, Scale-to-Zero)
+
+Google Cloud Run runs the exact same root [Dockerfile](../Dockerfile) (automatically binding to Cloud Run's `$PORT=8080`), scales to zero when idle, and includes a generous monthly free tier (2M requests, 360,000 GiB-seconds).
+
+### Option A: Zero-CLI Deploy via Google Cloud Console (Fastest)
+
+1. Open https://console.cloud.google.com/run and select/create a project (enable billing for the free tier).
+2. Click **Deploy container** → **Service** → choose **Continuously deploy from a repository (source or function)** → click **Set up with Cloud Build**.
+3. Connect GitHub and select:
+   - **Repository:** `garv2214/AI-Image-Deepfake-Forensics-Inspector`
+   - **Branch:** `^main$`
+   - **Build Type:** **Dockerfile** (Source location: `/Dockerfile`)
+4. Configure Service Settings (important for PyTorch):
+   - **Service name:** `ai-forensics-inspector-api`
+   - **Region:** `us-central1` (or `asia-south1`)
+   - **Authentication:** Select **Allow public access** (`Allow unauthenticated invocations`)
+   - **Container(s) → Capacity:**
+     - **Memory:** **`4 GiB`** *(required—default 512 MiB will OOM on PyTorch)*
+     - **CPU:** **`2`**
+     - **Startup CPU boost:** **Enabled**
+   - **Container port:** `8080`
+   - **Request timeout:** `120` seconds
+   - **Autoscaling:** Min instances `0`, Max instances `3`
+5. Click **Create**. Cloud Build will compile the image (~4–5 min) and return a live HTTPS URL like:
+   `https://ai-forensics-inspector-api-xxxxxxxxxx.us-central1.run.app`
+6. Verify `/api/health` and `/docs`, then paste that URL into Vercel's `NEXT_PUBLIC_API_URL` environment variable!
+
+### Option B: Deploy from Terminal (`gcloud` CLI)
+
+```bash
+brew install --cask gcloud-cli
+gcloud auth login
+gcloud config set project <YOUR_GCP_PROJECT_ID>
+
+cd /Users/macbook/mini_project
+gcloud run deploy ai-forensics-inspector-api \
+  --source . \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --memory 4Gi \
+  --cpu 2 \
+  --cpu-boost \
+  --timeout 120 \
+  --min-instances 0 \
+  --max-instances 3
+```
+
+---
+
 ## Optional: Test the Docker Container Locally Before Pushing
 
 ```bash

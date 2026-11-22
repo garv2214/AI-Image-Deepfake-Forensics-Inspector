@@ -1,0 +1,23 @@
+# Python
+backend/.venv/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+
+# Node / Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+*.log
+
+# Model caches / local artifacts
+backend/model_cache/
+evaluation_results/
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
+.env
+.env.local

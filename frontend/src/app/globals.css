@@ -1,0 +1,321 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Modern Dark Forensic Design System (modern-web-guidance compliant)
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  --surface-0: #060911;
+  --surface-1: #0c1220;
+  --surface-2: #121b2e;
+  --surface-3: #19253d;
+  --border-subtle: rgba(148, 163, 184, 0.16);
+  --border-strong: rgba(56, 189, 248, 0.35);
+
+  --accent-cyan: #22d3ee;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+
+  --scrollbar-track: #0b1120;
+  --scrollbar-thumb: #334155;
+
+  accent-color: var(--accent-cyan);
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* Legacy WebKit scrollbar fallback scoped with @supports not (scrollbar-color: auto) */
+@supports not (scrollbar-color: auto) {
+  html,
+  .forensic-scroller {
+    scrollbar-width: auto;
+  }
+
+  html::-webkit-scrollbar,
+  .forensic-scroller::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  html::-webkit-scrollbar-thumb,
+  .forensic-scroller::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 999px;
+  }
+
+  html::-webkit-scrollbar-track,
+  .forensic-scroller::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+  }
+}
+
+body {
+  font-family: "SF Pro Display", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--surface-0);
+  background-image:
+    radial-gradient(ellipse 80% 45% at 50% -10%, rgba(34, 211, 238, 0.11), transparent 70%),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.35), rgba(6, 9, 17, 1));
+  color: #e2e8f0;
+}
+
+.font-mono {
+  font-family: "SF Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+}
+
+/* ==========================================================================
+   Native <progress> Confidence Ring (progress-ring guide)
+   ========================================================================== */
+
+@property --value {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.progress-ring-wrapper {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--ring-size, 128px);
+  height: var(--ring-size, 128px);
+}
+
+progress.progress-ring {
+  appearance: none;
+  -webkit-appearance: none;
+  --size: var(--ring-size, 128px);
+  --thickness: 11px;
+  --track-color: rgba(148, 163, 184, 0.16);
+  --fill-color: var(--ring-fill, #22d3ee);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--fill-color) calc(var(--value) * 1%),
+    var(--track-color) 0
+  );
+  background-clip: border-area;
+  border: var(--thickness) solid transparent;
+  background-origin: border-box;
+  transition: --value 0s ease-out;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  progress.progress-ring {
+    transition-duration: 0.55s;
+  }
+}
+
+progress.progress-ring::-webkit-progress-bar,
+progress.progress-ring::-webkit-progress-value,
+progress.progress-ring::-moz-progress-bar {
+  display: none;
+  background: none;
+}
+
+/* Fallback for browsers without background-clip: border-area */
+@supports not (background-clip: border-area) {
+  progress.progress-ring {
+    border: 0;
+    mask-image: radial-gradient(
+      transparent calc(50% - var(--thickness)),
+      black calc(50% - var(--thickness) + 0.5px)
+    );
+    -webkit-mask-image: radial-gradient(
+      transparent calc(50% - var(--thickness)),
+      black calc(50% - var(--thickness) + 0.5px)
+    );
+  }
+}
+
+@media (forced-colors: active) {
+  progress.progress-ring {
+    forced-color-adjust: none;
+    --fill-color: CanvasText;
+    --track-color: Canvas;
+  }
+}
+
+.progress-ring-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Accessible Tabbed Inspection Controls (tabs guide)
+   ========================================================================== */
+
+.forensic-tablist {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: inline proximity;
+  gap: 0.25rem;
+  border-block-end: 1px solid var(--border-subtle);
+}
+
+.forensic-tab {
+  position: relative;
+  flex: none;
+  scroll-snap-align: start;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #94a3b8;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 150ms ease;
+}
+
+.forensic-tab:hover {
+  color: #e2e8f0;
+}
+
+.forensic-tab:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: -2px;
+  border-radius: 6px;
+}
+
+/* Selected indicator drawn via border on ::after so it survives forced-colors mode (WCAG 1.4.1) */
+.forensic-tab[aria-selected="true"] {
+  color: #f8fafc;
+}
+
+.forensic-tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  border-block-end: 3px solid var(--accent-cyan);
+}
+
+/* Panels kept clean (no padding/border/bg on panel itself so hidden="until-found" renders zero strip) */
+.forensic-tabpanel-stack {
+  display: grid;
+}
+
+.forensic-tabpanel-stack > [role="tabpanel"] {
+  grid-area: 1 / 1;
+}
+
+/* ==========================================================================
+   Responsive Container-Query Audit Table (responsive-table guide)
+   ========================================================================== */
+
+.forensic-table-wrapper {
+  overflow: auto;
+  max-inline-size: 100%;
+  max-block-size: min(460px, 70vh);
+  container-type: inline-size;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-subtle);
+  background: rgba(12, 18, 32, 0.75);
+}
+
+.forensic-table-wrapper:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+.forensic-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+  font-size: 0.84rem;
+}
+
+.forensic-table thead {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 2;
+  background: #10192b;
+}
+
+.forensic-table th,
+.forensic-table td {
+  padding: 0.65rem 0.9rem;
+  border-block-end: 1px solid rgba(148, 163, 184, 0.12);
+  vertical-align: top;
+}
+
+.forensic-table thead th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.forensic-table tbody th {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 1;
+  background: #0d1526;
+  color: #e2e8f0;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+@container (width < 560px) {
+  .forensic-table,
+  .forensic-table thead,
+  .forensic-table tbody,
+  .forensic-table tr,
+  .forensic-table th,
+  .forensic-table td {
+    display: block;
+  }
+
+  .forensic-table thead {
+    display: none;
+  }
+
+  .forensic-table tr {
+    margin: 0.65rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.65rem;
+    overflow: hidden;
+    background: rgba(18, 27, 46, 0.7);
+  }
+
+  .forensic-table tbody th {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 2;
+    background: #162238;
+    border-block-end: 1px solid var(--border-subtle);
+  }
+
+  .forensic-table {
+    --label-2: "Value";
+    --label-3: "Category";
+    --label-4: "Signal";
+  }
+
+  .forensic-table td:nth-child(2)::before {
+    content: var(--label-2) ": ";
+    font-weight: 600;
+    color: #94a3b8;
+  }
+
+  .forensic-table td:nth-child(3)::before {
+    content: var(--label-3) ": ";
+    font-weight: 600;
+    color: #94a3b8;
+  }
+
+  .forensic-table td:nth-child(4)::before {
+    content: var(--label-4) ": ";
+    font-weight: 600;
+    color: #94a3b8;
+  }
+}

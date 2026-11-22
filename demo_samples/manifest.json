@@ -1,0 +1,50 @@
+[
+  {
+    "id": "authentic-dslr",
+    "title": "Authentic DSLR Capture",
+    "category": "authentic",
+    "description": "Natural camera-captured scene with uniform Q92 JPEG compression and intact Canon EOS R5 EXIF telemetry.",
+    "expected_signal": "Clean camera EXIF, uniform ELA error field, smooth 1/f FFT decay.",
+    "filename": "authentic_dslr_landscape.jpg"
+  },
+  {
+    "id": "authentic-c2pa",
+    "title": "C2PA Provenance Photo",
+    "category": "authentic",
+    "description": "Photograph carrying embedded C2PA Content Credentials JUMBF manifest alongside Nikon Z8 hardware metadata.",
+    "expected_signal": "Verified C2PA provenance badge + uniform compression profile.",
+    "filename": "authentic_c2pa_street.jpg"
+  },
+  {
+    "id": "spliced-photoshop",
+    "title": "Photoshop Spliced Object",
+    "category": "spliced",
+    "description": "Composite forgery where a high-quality patch was pasted onto a lower-quality JPEG background and saved in Adobe Photoshop.",
+    "expected_signal": "Bright localized ELA hotspot box + Adobe Photoshop EXIF software flag.",
+    "filename": "spliced_photoshop_evidence.jpg"
+  },
+  {
+    "id": "spliced-document",
+    "title": "Tampered Document / Claim",
+    "category": "spliced",
+    "description": "Simulated insurance/KYC document with a localized pasted region edited in GIMP at a mismatched compression level.",
+    "expected_signal": "Localized ELA manipulation trigger + GIMP editing footprint.",
+    "filename": "spliced_cloning_document.jpg"
+  },
+  {
+    "id": "ai-diffusion-grid",
+    "title": "AI Synthetic Render + FFT Peaks",
+    "category": "ai_generated",
+    "description": "Synthetic smooth diffusion render containing periodic decoder upsampling harmonics and embedded Stable Diffusion prompt chunks.",
+    "expected_signal": "2D FFT periodic peaks + AI generator metadata + Grad-CAM attention map.",
+    "filename": "ai_synthetic_diffusion_grid.png"
+  },
+  {
+    "id": "edge-whatsapp",
+    "title": "WhatsApp Re-Compressed Edge Case",
+    "category": "edge_case",
+    "description": "Authentic photo stripped of EXIF and double-compressed at low quality to demonstrate real-world platform attenuation during viva Q&A.",
+    "expected_signal": "Stripped EXIF treated as neutral + attenuated ELA/FFT limitation callout.",
+    "filename": "edge_whatsapp_recompressed.jpg"
+  }
+]

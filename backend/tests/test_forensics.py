@@ -118,6 +118,10 @@ def test_layer2_fft_detects_periodic_grid_spikes():
 def test_fastapi_endpoints_end_to_end():
     client = TestClient(app)
 
+    root = client.get("/")
+    assert root.status_code == 200
+    assert root.json()["status"] == "running"
+
     health = client.get("/api/health")
     assert health.status_code == 200
     assert health.json()["status"] == "ok"

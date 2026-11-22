@@ -63,6 +63,18 @@ async def validation_error_handler(_request, exc: ValidationError):
     return JSONResponse(status_code=exc.status_code, content={"detail": str(exc)})
 
 
+@app.get("/", tags=["System"])
+async def root_status():
+    """Root endpoint used by Hugging Face Spaces / cloud health probes."""
+    return {
+        "service": settings.app_name,
+        "version": settings.app_version,
+        "status": "running",
+        "docs": "/docs",
+        "health": "/api/health",
+    }
+
+
 @app.get("/api/health", response_model=HealthResponse, tags=["System"])
 async def health_check() -> HealthResponse:
     """Return engine readiness, hardware accelerator, and offline cache status."""

@@ -1,0 +1,15 @@
+.git
+.gitignore
+.pytest_cache
+**/__pycache__
+*.pyc
+.DS_Store
+
+# Exclude local virtualenvs, frontend, and local macOS caches from backend container
+backend/.venv
+backend/model_cache
+frontend
+evaluation_results
+docs
+Makefile
+start_dev.sh

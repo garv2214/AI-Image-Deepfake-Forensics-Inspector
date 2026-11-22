@@ -85,6 +85,12 @@ make download-model
 
 ---
 
+## Live Deployment ($0/month)
+
+Deploy the **Next.js frontend** on **Vercel** and the **PyTorch + FastAPI backend** on **Hugging Face Spaces (Docker SDK, free 16 GB RAM)** using the included [Dockerfile](Dockerfile) and [frontend/vercel.json](frontend/vercel.json). See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for step-by-step instructions.
+
+---
+
 ## Privacy & Limitations
 
 - **Ephemeral RAM-Only Processing:** Uploaded files are never written to disk; all decoding, re-compression, FFT, and neural inference run strictly in memory.
